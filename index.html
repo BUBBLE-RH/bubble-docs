@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>$BUBBLE — the meter</title>
+<meta name="description" content="Live: how inflated the bubble is, what's locked, what's burned, what's waiting for the next round.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --blue:#049bf6;      /* the logo's sky */
+    --ink:#05090f;       /* chip housing */
+    --glass:#e6f4ff;     /* bubble sheen */
+    --trace:#38bdf8;     /* circuit glow */
+    --pop:#ff5b4a;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--blue);color:var(--ink);font-family:Sora,system-ui,sans-serif;font-weight:300}
+  a{color:inherit}
+  .wrap{max-width:1080px;margin:0 auto;padding:40px 24px 80px}
+  header{display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap}
+  header .name{font-weight:700;font-size:20px;letter-spacing:-.01em}
+  header nav a{margin-left:20px;font-size:15px;text-decoration:none;border-bottom:1px solid rgba(5,9,15,.35)}
+  header nav a:hover{border-bottom-color:var(--ink)}
+
+  .hero{display:grid;grid-template-columns:minmax(260px,420px) 1fr;gap:40px;align-items:center;margin-top:56px}
+  @media (max-width:760px){.hero{grid-template-columns:1fr}}
+  .bubble{width:100%;aspect-ratio:1;display:block}
+  h1{font-size:clamp(34px,5vw,56px);line-height:1.02;font-weight:700;letter-spacing:-.02em;margin:0 0 14px}
+  .lede{font-size:18px;line-height:1.5;max-width:34em;margin:0}
+  .lede b{font-weight:500}
+  .status{margin-top:18px;font-size:14px;opacity:.75}
+
+  .figures{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:0;margin-top:64px;border-top:2px solid var(--ink)}
+  .fig{padding:22px 24px 26px 0;border-bottom:1px solid rgba(5,9,15,.25)}
+  .fig .v{font-size:clamp(28px,3.4vw,40px);font-weight:700;letter-spacing:-.02em;line-height:1;margin-bottom:8px;font-variant-numeric:tabular-nums}
+  .fig .l{font-size:15px;line-height:1.35;max-width:22em}
+  .fig .l a{text-decoration:none;border-bottom:1px solid rgba(5,9,15,.35)}
+
+  .rounds{margin-top:64px}
+  .rounds h2{font-size:22px;font-weight:700;margin:0 0 6px}
+  .rounds p{margin:0 0 18px;max-width:40em;line-height:1.5}
+  table{width:100%;border-collapse:collapse;font-size:16px}
+  th,td{text-align:left;padding:12px 16px 12px 0;border-bottom:1px solid rgba(5,9,15,.25);font-weight:300}
+  th{font-weight:500}
+  td.done{opacity:.55;text-decoration:line-through}
+  tr.next td{font-weight:500}
+
+  footer{margin-top:72px;font-size:14px;line-height:1.6;max-width:44em;opacity:.8}
+  footer a{text-decoration:none;border-bottom:1px solid rgba(5,9,15,.35)}
+  .err{margin-top:18px;padding:14px 16px;background:rgba(5,9,15,.08);border-left:3px solid var(--pop);font-size:14px;line-height:1.5;display:none}
+  @media (prefers-reduced-motion:no-preference){
+    .bubble .skin{transition:r 900ms cubic-bezier(.2,.8,.2,1)}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="name">$BUBBLE</div>
+    <nav>
+      <a href="./docs">Where the air comes from</a>
+      <a href="https://x.com/AIBubble_RH">X</a>
+      <a href="https://t.me/AIBubble_RH">Telegram</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <svg class="bubble" viewBox="0 0 400 400" role="img" aria-labelledby="bt">
+      <title id="bt">The bubble, sized to its progress toward the next round</title>
+      <circle cx="200" cy="200" r="190" fill="none" stroke="rgba(5,9,15,.35)" stroke-width="1.5" stroke-dasharray="4 8"/>
+      <circle class="skin" id="skin" cx="200" cy="200" r="60" fill="rgba(230,244,255,.28)" stroke="var(--glass)" stroke-width="2"/>
+      <g id="chip" transform="translate(200 200)">
+        <rect x="-26" y="-26" width="52" height="52" rx="4" fill="var(--ink)"/>
+        <g stroke="var(--trace)" stroke-width="1.2" fill="none">
+          <path d="M-26 -10H-40M-26 0H-40M-26 10H-40M26 -10H40M26 0H40M26 10H40M-10 -26V-40M0 -26V-40M10 -26V-40M-10 26V40M0 26V40M10 26V40"/>
+          <rect x="-14" y="-14" width="28" height="28" rx="2"/>
+        </g>
+      </g>
+    </svg>
+    <div>
+      <h1 id="headline">Loading the bubble…</h1>
+      <p class="lede" id="lede">Reading Robinhood Chain.</p>
+      <div class="status" id="status"></div>
+      <div class="err" id="err"></div>
+    </div>
+  </section>
+
+  <section class="figures" aria-label="Live figures">
+    <div class="fig"><div class="v" id="locked">—</div><div class="l">$BUBBLE bought back and locked in the <a id="vaultlink" href="#">vault</a>. Vests over five years.</div></div>
+    <div class="fig"><div class="v" id="burned">—</div><div class="l">$BUBBLE burned. Gone for good.</div></div>
+    <div class="fig"><div class="v" id="accrued">—</div><div class="l">NVDA waiting in the <a id="escrowlink" href="#">fee escrow</a> for the next round.</div></div>
+    <div class="fig"><div class="v" id="pot">—</div><div class="l">NVDA already moved to the <a id="potlink" href="#">round wallet</a>.</div></div>
+  </section>
+
+  <section class="rounds">
+    <h2>Rounds</h2>
+    <p>The bubble raises a round every time market cap crosses a line. Holders get paid, weighted by how long they've held.</p>
+    <table id="rounds">
+      <thead><tr><th>Round</th><th>Market cap</th><th>Status</th></tr></thead>
+      <tbody></tbody>
+    </table>
+  </section>
+
+  <footer>
+    Everything on this page is read live from the chain in your browser; nothing is served from us. Verify any number on
+    <a href="https://robinscan.io">Robinscan</a>. Not affiliated with NVIDIA Corporation, Robinhood Markets, or Pons Labs. It can go to zero.
+  </footer>
+</div>
+
+<script type="module">
+import { createPublicClient, http, formatUnits, parseAbi } from "https://esm.sh/viem@2";
+
+// ---------------- fill these after launch ----------------
+const CFG = {
+  rpc: "https://rpc.mainnet.chain.robinhood.com",
+  token: "0x0000000000000000000000000000000000000000",   // $BUBBLE
+  nvda: "0xd0601CE157Db5bdC3162BbaC2a2C8aF5320D9EEC",
+  creator: "0xA2fB67138825Dc119573BB345934395382C95831",
+  roundWallet: "0xb208A5602a09ebd184627f0F8A03B0025B4003dA",
+  vault: "0x42df2a798f82289E177311362e8f5ccC45c1219c",
+  escrow: "0xd3AFEB2a57f70eF218Aa82451c51B2fb0416Ac9e",
+  initialSupply: 1_000_000_000n * 10n ** 18n,             // confirm from the token after launch
+  // Market cap: set manually until live pricing is wired (read it off the Pons page), or leave null.
+  marketCapUsd: null,
+  rounds: [["Seed",1e6],["Series A",1e7],["Series B",1e8],["Unicorn",1e9],["IPO",1e10]],
+  roundsClosed: 0,   // bump after each round is paid
+};
+// ---------------------------------------------------------
+
+const abi = parseAbi([
+  "function totalLocked(address) view returns (uint256)",
+  "function totalSupply() view returns (uint256)",
+  "function balanceOf(address) view returns (uint256)",
+  "function decimals() view returns (uint8)",
+  "function balanceOfToken(address,address) view returns (uint256)",
+]);
+const $ = (id) => document.getElementById(id);
+const fmt = (n, d = 0) => Number(n).toLocaleString(undefined, { maximumFractionDigits: d });
+const usd = (n) => n >= 1e9 ? `$${fmt(n/1e9,1)}B` : n >= 1e6 ? `$${fmt(n/1e6,1)}M` : `$${fmt(n)}`;
+
+$("vaultlink").href = `https://robinscan.io/address/${CFG.vault}`;
+$("escrowlink").href = `https://robinscan.io/address/${CFG.escrow}`;
+$("potlink").href = `https://robinscan.io/address/${CFG.roundWallet}`;
+
+// rounds table
+const tb = $("rounds").querySelector("tbody");
+CFG.rounds.forEach(([name, cap], i) => {
+  const tr = document.createElement("tr");
+  const state = i < CFG.roundsClosed ? "closed" : i === CFG.roundsClosed ? "next" : "";
+  if (state === "next") tr.className = "next";
+  tr.innerHTML = `<td class="${state==="closed"?"done":""}">${name}</td><td>${usd(cap)}</td><td>${state==="closed"?"Paid":state==="next"?"Next":""}</td>`;
+  tb.appendChild(tr);
+});
+
+// hero
+const [nextName, nextCap] = CFG.rounds[Math.min(CFG.roundsClosed, CFG.rounds.length - 1)];
+if (CFG.marketCapUsd) {
+  const p = Math.min(CFG.marketCapUsd / nextCap, 1);
+  $("skin").setAttribute("r", String(40 + 150 * Math.sqrt(p)));
+  $("headline").textContent = `${nextName}: ${usd(CFG.marketCapUsd)} of ${usd(nextCap)}`;
+  $("lede").innerHTML = `The bubble is <b>${fmt(p*100)}%</b> of the way to its next round. Every trade buys it back. Every round pays holders.`;
+} else {
+  $("skin").setAttribute("r", "60");
+  $("headline").textContent = `Raising ${nextName} at ${usd(nextCap)}`;
+  $("lede").innerHTML = `Live market cap on <a href="https://ponsfamily.com">Pons</a>. Every trade buys it back. Every round pays holders.`;
+}
+
+// live reads
+const client = createPublicClient({ transport: http(CFG.rpc) });
+const t = (address) => ({ address, abi });
+try {
+  const [dec, ndec, locked, supply, dead, accrued, pot] = await Promise.all([
+    client.readContract({ ...t(CFG.token), functionName: "decimals" }),
+    client.readContract({ ...t(CFG.nvda), functionName: "decimals" }),
+    client.readContract({ ...t(CFG.vault), functionName: "totalLocked", args: [CFG.token] }),
+    client.readContract({ ...t(CFG.token), functionName: "totalSupply" }),
+    client.readContract({ ...t(CFG.token), functionName: "balanceOf", args: ["0x000000000000000000000000000000000000dEaD"] }),
+    client.readContract({ ...t(CFG.escrow), functionName: "balanceOfToken", args: [CFG.creator, CFG.nvda] }),
+    client.readContract({ ...t(CFG.nvda), functionName: "balanceOf", args: [CFG.roundWallet] }),
+  ]);
+  const burned = (CFG.initialSupply - supply) + dead;
+  $("locked").textContent = fmt(formatUnits(locked, dec));
+  $("burned").textContent = fmt(formatUnits(burned, dec));
+  $("accrued").textContent = fmt(formatUnits(accrued, ndec), 2);
+  $("pot").textContent = fmt(formatUnits(pot, ndec), 2);
+  $("status").textContent = `Read from block ${await client.getBlockNumber()} · ${new Date().toLocaleTimeString()}`;
+} catch (e) {
+  const err = $("err");
+  err.style.display = "block";
+  err.textContent = `Couldn't read the chain from your browser (${e.shortMessage || e.message}). The numbers are still on Robinscan — links above.`;
+}
+</script>
+</body>
+</html>

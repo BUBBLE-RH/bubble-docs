@@ -120,7 +120,7 @@ import { createPublicClient, http, formatUnits, parseAbi } from "https://esm.sh/
 // ---------------- fill these after launch ----------------
 const CFG = {
   rpc: "https://rpc.mainnet.chain.robinhood.com",
-  token: "0x0000000000000000000000000000000000000000",   // $BUBBLE
+  token: "0xD5f1afEA47b1A9eab414D2ee740cF1d6d039E725",   // $BUBBLE
   nvda: "0xd0601CE157Db5bdC3162BbaC2a2C8aF5320D9EEC",
   creator: "0xA2fB67138825Dc119573BB345934395382C95831",
   roundWallet: "0xb208A5602a09ebd184627f0F8A03B0025B4003dA",
@@ -128,7 +128,7 @@ const CFG = {
   escrow: "0xd3AFEB2a57f70eF218Aa82451c51B2fb0416Ac9e",
   initialSupply: 1_000_000_000n * 10n ** 18n,             // confirm from the token after launch
   // Market cap: set manually until live pricing is wired (read it off the Pons page), or leave null.
-  marketCapUsd: null,
+  marketCapUsd: 1E5,
   rounds: [["Seed",1e6],["Series A",1e7],["Series B",1e8],["Unicorn",1e9],["IPO",1e10]],
   roundsClosed: 0,   // bump after each round is paid
 };

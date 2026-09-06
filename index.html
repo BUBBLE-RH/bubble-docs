@@ -9,47 +9,51 @@
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;500;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --blue:#049bf6;      /* the logo's sky */
-    --ink:#05090f;       /* chip housing */
-    --glass:#e6f4ff;     /* bubble sheen */
+    --bg:#0b1626;        /* chip interior */
+    --ink:#e6f0fa;       /* text */
+    --dim:rgba(230,240,250,.62);
+    --line:rgba(230,240,250,.18);
+    --blue:#049bf6;      /* the logo's sky, now the accent */
+    --glass:#bfe3ff;     /* bubble sheen */
     --trace:#38bdf8;     /* circuit glow */
     --pop:#ff5b4a;
   }
   *{box-sizing:border-box}
-  html,body{margin:0;background:var(--blue);color:var(--ink);font-family:Sora,system-ui,sans-serif;font-weight:300}
+  html,body{margin:0;background:var(--bg);color:var(--ink);font-family:Sora,system-ui,sans-serif;font-weight:300}
   a{color:inherit}
   .wrap{max-width:1080px;margin:0 auto;padding:40px 24px 80px}
   header{display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap}
   header .name{font-weight:700;font-size:20px;letter-spacing:-.01em}
-  header nav a{margin-left:20px;font-size:15px;text-decoration:none;border-bottom:1px solid rgba(5,9,15,.35)}
-  header nav a:hover{border-bottom-color:var(--ink)}
+  header nav a{margin-left:20px;font-size:15px;text-decoration:none;border-bottom:1px solid var(--line)}
+  header nav a:hover{border-bottom-color:var(--blue)}
 
   .hero{display:grid;grid-template-columns:minmax(260px,420px) 1fr;gap:40px;align-items:center;margin-top:56px}
   @media (max-width:760px){.hero{grid-template-columns:1fr}}
   .bubble{width:100%;aspect-ratio:1;display:block}
   h1{font-size:clamp(34px,5vw,56px);line-height:1.02;font-weight:700;letter-spacing:-.02em;margin:0 0 14px}
-  .lede{font-size:18px;line-height:1.5;max-width:34em;margin:0}
-  .lede b{font-weight:500}
-  .status{margin-top:18px;font-size:14px;opacity:.75}
+  .lede{font-size:18px;line-height:1.5;max-width:34em;margin:0;color:var(--dim)}
+  .lede a{border-bottom:1px solid var(--line);text-decoration:none}
+  .lede b{font-weight:500;color:var(--ink)}
+  .status{margin-top:18px;font-size:14px;color:var(--dim)}
 
-  .figures{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:0;margin-top:64px;border-top:2px solid var(--ink)}
-  .fig{padding:22px 24px 26px 0;border-bottom:1px solid rgba(5,9,15,.25)}
+  .figures{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:0;margin-top:64px;border-top:2px solid var(--blue)}
+  .fig{padding:22px 24px 26px 0;border-bottom:1px solid var(--line)}
   .fig .v{font-size:clamp(28px,3.4vw,40px);font-weight:700;letter-spacing:-.02em;line-height:1;margin-bottom:8px;font-variant-numeric:tabular-nums}
-  .fig .l{font-size:15px;line-height:1.35;max-width:22em}
-  .fig .l a{text-decoration:none;border-bottom:1px solid rgba(5,9,15,.35)}
+  .fig .l{font-size:15px;line-height:1.35;max-width:22em;color:var(--dim)}
+  .fig .l a{text-decoration:none;border-bottom:1px solid var(--line);color:var(--ink)}
 
   .rounds{margin-top:64px}
   .rounds h2{font-size:22px;font-weight:700;margin:0 0 6px}
-  .rounds p{margin:0 0 18px;max-width:40em;line-height:1.5}
+  .rounds p{margin:0 0 18px;max-width:40em;line-height:1.5;color:var(--dim)}
   table{width:100%;border-collapse:collapse;font-size:16px}
-  th,td{text-align:left;padding:12px 16px 12px 0;border-bottom:1px solid rgba(5,9,15,.25);font-weight:300}
+  th,td{text-align:left;padding:12px 16px 12px 0;border-bottom:1px solid var(--line);font-weight:300}
   th{font-weight:500}
-  td.done{opacity:.55;text-decoration:line-through}
-  tr.next td{font-weight:500}
+  td.done{color:var(--dim);text-decoration:line-through}
+  tr.next td{font-weight:500;color:var(--trace)}
 
-  footer{margin-top:72px;font-size:14px;line-height:1.6;max-width:44em;opacity:.8}
-  footer a{text-decoration:none;border-bottom:1px solid rgba(5,9,15,.35)}
-  .err{margin-top:18px;padding:14px 16px;background:rgba(5,9,15,.08);border-left:3px solid var(--pop);font-size:14px;line-height:1.5;display:none}
+  footer{margin-top:72px;font-size:14px;line-height:1.6;max-width:44em;color:var(--dim)}
+  footer a{text-decoration:none;border-bottom:1px solid var(--line);color:var(--ink)}
+  .err{margin-top:18px;padding:14px 16px;background:rgba(255,91,74,.08);border-left:3px solid var(--pop);font-size:14px;line-height:1.5;display:none}
   @media (prefers-reduced-motion:no-preference){
     .bubble .skin{transition:r 900ms cubic-bezier(.2,.8,.2,1)}
   }
@@ -60,19 +64,20 @@
   <header>
     <div class="name">$BUBBLE</div>
     <nav>
-      <a href="./docs">Where the air comes from</a>
+      <a href="./docs/">How $BUBBLE inflates (docs)</a>
       <a href="https://x.com/AIBubble_RH">X</a>
       <a href="https://t.me/AIBubble_RH">Telegram</a>
+      <a href="https://github.com/BUBBLE-RH/bubble-docs">Source</a>
     </nav>
   </header>
 
   <section class="hero">
     <svg class="bubble" viewBox="0 0 400 400" role="img" aria-labelledby="bt">
       <title id="bt">The bubble, sized to its progress toward the next round</title>
-      <circle cx="200" cy="200" r="190" fill="none" stroke="rgba(5,9,15,.35)" stroke-width="1.5" stroke-dasharray="4 8"/>
-      <circle class="skin" id="skin" cx="200" cy="200" r="60" fill="rgba(230,244,255,.28)" stroke="var(--glass)" stroke-width="2"/>
+      <circle cx="200" cy="200" r="190" fill="none" stroke="var(--line)" stroke-width="1.5" stroke-dasharray="4 8"/>
+      <circle class="skin" id="skin" cx="200" cy="200" r="60" fill="rgba(4,155,246,.16)" stroke="var(--glass)" stroke-width="2"/>
       <g id="chip" transform="translate(200 200)">
-        <rect x="-26" y="-26" width="52" height="52" rx="4" fill="var(--ink)"/>
+        <rect x="-26" y="-26" width="52" height="52" rx="4" fill="#020509" stroke="var(--line)" stroke-width="1"/>
         <g stroke="var(--trace)" stroke-width="1.2" fill="none">
           <path d="M-26 -10H-40M-26 0H-40M-26 10H-40M26 -10H40M26 0H40M26 10H40M-10 -26V-40M0 -26V-40M10 -26V-40M-10 26V40M0 26V40M10 26V40"/>
           <rect x="-14" y="-14" width="28" height="28" rx="2"/>
@@ -129,6 +134,7 @@ const CFG = {
 };
 // ---------------------------------------------------------
 
+const ZERO = "0x0000000000000000000000000000000000000000";
 const abi = parseAbi([
   "function totalLocked(address) view returns (uint256)",
   "function totalSupply() view returns (uint256)",
@@ -138,7 +144,7 @@ const abi = parseAbi([
 ]);
 const $ = (id) => document.getElementById(id);
 const fmt = (n, d = 0) => Number(n).toLocaleString(undefined, { maximumFractionDigits: d });
-const usd = (n) => n >= 1e9 ? `$${fmt(n/1e9,1)}B` : n >= 1e6 ? `$${fmt(n/1e6,1)}M` : `$${fmt(n)}`;
+const usd = (n) => n >= 1e9 ? `$${fmt(n/1e9,1)}B` : n >= 1e6 ? `$${fmt(n/1e6,1)}M` : n >= 1e3 ? `$${fmt(n/1e3)}K` : `$${fmt(n)}`;
 
 $("vaultlink").href = `https://robinscan.io/address/${CFG.vault}`;
 $("escrowlink").href = `https://robinscan.io/address/${CFG.escrow}`;
@@ -163,11 +169,16 @@ if (CFG.marketCapUsd) {
   $("lede").innerHTML = `The bubble is <b>${fmt(p*100)}%</b> of the way to its next round. Every trade buys it back. Every round pays holders.`;
 } else {
   $("skin").setAttribute("r", "60");
-  $("headline").textContent = `Raising ${nextName} at ${usd(nextCap)}`;
-  $("lede").innerHTML = `Live market cap on <a href="https://ponsfamily.com">Pons</a>. Every trade buys it back. Every round pays holders.`;
+  $("headline").textContent = CFG.token === ZERO ? "Not inflated yet" : `Raising ${nextName} at ${usd(nextCap)}`;
+  $("lede").innerHTML = CFG.token === ZERO
+    ? `Launching on Robinhood Chain, priced in $NVDA. Every trade buys it back. Every round pays holders.`
+    : `Live market cap on <a href="https://ponsfamily.com">Pons</a>. Every trade buys it back. Every round pays holders.`;
 }
 
 // live reads
+if (CFG.token === ZERO) {
+  $("status").textContent = "Awaiting launch. Live figures appear once the token address is set.";
+} else {
 const client = createPublicClient({ transport: http(CFG.rpc) });
 const t = (address) => ({ address, abi });
 try {
@@ -190,6 +201,7 @@ try {
   const err = $("err");
   err.style.display = "block";
   err.textContent = `Couldn't read the chain from your browser (${e.shortMessage || e.message}). The numbers are still on Robinscan — links above.`;
+}
 }
 </script>
 </body>

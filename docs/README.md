@@ -39,7 +39,7 @@ Every trade pays a **1% base fee** plus a **2% management fee** — like every f
 | 30% | Pons (protocol) |
 | Up to 35% | **Buyback.** Buys $BUBBLE off the market and locks it in the Pons buyback vault, vesting over 5 years. Our share is burned as it vests. |
 | 35% | **Rounds.** Accumulates in NVDA. Converted to $BUBBLE and paid to holders each time the bubble raises a round. |
-| 2% management fee | Team. Disclosed on-chain; readable on the token contract. |
+| 1% management fee | Team. Disclosed on-chain; readable on the token contract. |
 
 Buybacks are executed by the protocol and skipped only when a buy would move the price more than 3%. Anything skipped lands with the team, who buy back manually in smaller pieces. 
 

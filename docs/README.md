@@ -71,8 +71,8 @@ Verify everything below on [Robinscan](https://robinscan.io). The token address 
 
 | | Address |
 |---|---|
-| $BUBBLE token | `[fill after launch]` |
-| Bonding curve | `[fill after launch]` |
+| $BUBBLE token | `0xFc6ec00512D3455712Ec99CDcBA1d66C38238203` |
+| Bonding curve | `0x9830b5e78981fA74593E0F3002473Ef1d3C7bb8D` |
 | Pair asset (NVDA) | `0xd0601CE157Db5bdC3162BbaC2a2C8aF5320D9EEC` |
 | Creator wallet (fees) | `0xA2fB67138825Dc119573BB345934395382C95831` |
 | Round payout wallet | `0xb208A5602a09ebd184627f0F8A03B0025B4003dA` |
